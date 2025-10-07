@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import KeplerGl from "@kepler.gl/components";
 import { addDataToMap } from "@kepler.gl/actions";
 import keplerGlReducer from "@kepler.gl/reducers";
+import type { ParsedConfig } from "@kepler.gl/types";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { taskMiddleware } from "react-palm/tasks";
 import { Provider, useDispatch } from "react-redux";
@@ -39,12 +40,13 @@ const WarningBanner = styled.div`
   font-weight: 500;
 `;
 
-// Create Redux store
-const reducers = combineReducers({
-  keplerGl: keplerGlReducer,
-});
-
-const store = createStore(reducers, {}, applyMiddleware(taskMiddleware));
+// Create Redux store factory (per-component instance)
+const createKeplerStore = () => {
+  const reducers = combineReducers({
+    keplerGl: keplerGlReducer,
+  });
+  return createStore(reducers, {}, applyMiddleware(taskMiddleware));
+};
 
 interface KeplerMapInnerProps {
   mapboxToken: string | undefined;
@@ -61,15 +63,24 @@ function KeplerMapInner({ mapboxToken }: KeplerMapInnerProps) {
     // Load the configuration when component mounts
     // This applies the pre-configured settings from kepler-config.json
     // including map state (Israel coordinates), theme, layers, and filters
-    dispatch(
-      addDataToMap({
-        datasets: [],
-        config: keplerConfig.config as any,
-        options: {
-          centerMap: true,
-        },
-      })
-    );
+    try {
+      if (!keplerConfig?.config) {
+        console.error('Invalid Kepler.gl configuration');
+        return;
+      }
+
+      dispatch(
+        addDataToMap({
+          datasets: [],
+          config: keplerConfig.config as unknown as ParsedConfig,
+          options: {
+            centerMap: true,
+          },
+        })
+      );
+    } catch (error) {
+      console.error('Failed to initialize Kepler.gl:', error);
+    }
   }, [dispatch]);
 
   return (
@@ -108,6 +119,9 @@ function KeplerMapInner({ mapboxToken }: KeplerMapInnerProps) {
  * ```
  */
 export default function KeplerMap() {
+  // Create store per component instance to prevent state leakage in Next.js App Router
+  const store = useMemo(() => createKeplerStore(), []);
+
   const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
   // Show warning if Mapbox token is missing
