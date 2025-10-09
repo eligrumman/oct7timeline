@@ -179,10 +179,10 @@ function KeplerMapInner({ mapboxToken }: KeplerMapInnerProps) {
                     thickness: 2,
                     strokeColor: null,
                     colorRange: {
-                      name: 'Global Warming',
+                      name: 'Red Memorial Scale',
                       type: 'sequential',
-                      category: 'Uber',
-                      colors: ['#E60000', '#FF0000', '#FF4444'],
+                      category: 'Custom',
+                      colors: ['#FF0000', '#E60000', '#CC0000', '#B30000', '#990000'],
                     },
                     strokeColorRange: {
                       name: 'Global Warming',
@@ -206,8 +206,11 @@ function KeplerMapInner({ mapboxToken }: KeplerMapInnerProps) {
                   ],
                 },
                 visualChannels: {
-                  colorField: null,
-                  colorScale: 'quantile',
+                  colorField: {
+                    name: 'type',
+                    type: 'string',
+                  },
+                  colorScale: 'ordinal',
                   strokeColorField: null,
                   strokeColorScale: 'quantile',
                   sizeField: null,
