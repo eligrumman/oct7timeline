@@ -23,13 +23,13 @@ const CSV_COLUMN_MAP = {
 } as const;
 
 /**
- * Gender mapping from Hebrew to English
+ * Gender mapping - keep Hebrew values as they are in the type system
  */
-const GENDER_MAP: Record<string, 'male' | 'female' | 'unknown'> = {
-  'זכר': 'male',
-  'נקבה': 'female',
-  '-': 'unknown',
-  '': 'unknown',
+const GENDER_MAP: Record<string, 'זכר' | 'נקבה' | undefined> = {
+  'זכר': 'זכר',
+  'נקבה': 'נקבה',
+  '-': undefined,
+  '': undefined,
 };
 
 /**
@@ -99,7 +99,7 @@ function transformCSVRowToVictimData(row: Record<string, string>): Partial<Victi
     longitude: 0, // Will be enriched later with geocoding
     source: url || 'unknown',
     type: TYPE_MAP[category] || category || 'unknown',
-    gender: GENDER_MAP[genderHebrew] || 'unknown',
+    gender: GENDER_MAP[genderHebrew],
     rank: rank === '-' ? undefined : rank,
     url,
   };
