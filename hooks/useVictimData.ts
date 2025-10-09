@@ -64,7 +64,7 @@ interface UseVictimDataReturn {
   /** Function to manually refetch data */
   refetch: () => Promise<void>;
   /** Metadata about the response */
-  metadata: VictimsAPIResponse['data']['metadata'] | null;
+  metadata: NonNullable<VictimsAPIResponse['data']>['metadata'] | null;
 }
 
 /**
@@ -100,7 +100,7 @@ export function useVictimData(options: UseVictimDataOptions = {}): UseVictimData
   const [data, setData] = useState<ProcessedVictimData[] | null>(null);
   const [statistics, setStatistics] = useState<VictimStatistics | null>(null);
   const [locations, setLocations] = useState<VictimLocation[] | null>(null);
-  const [metadata, setMetadata] = useState<VictimsAPIResponse['data']['metadata'] | null>(null);
+  const [metadata, setMetadata] = useState<NonNullable<VictimsAPIResponse['data']>['metadata'] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
