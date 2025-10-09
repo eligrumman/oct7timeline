@@ -47,7 +47,10 @@ export function calculateVictimStatistics(
       byType: {},
       byDate: {},
       byLocation: {},
-      byGender: {},
+      byGender: {
+        'זכר': 0,
+        'נקבה': 0,
+      },
       ageStats: {
         min: 0,
         max: 0,
