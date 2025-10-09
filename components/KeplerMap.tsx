@@ -153,11 +153,31 @@ function KeplerMapInner({ mapboxToken }: KeplerMapInnerProps) {
           },
         };
 
-        // Configure the point layer
+        // Configure the point layer and timeline filter
         const config = {
           ...(keplerConfig.config as unknown as ParsedConfig),
           visState: {
             ...(keplerConfig.config as any).visState,
+            filters: [
+              {
+                dataId: ['victims'],
+                id: 'timeline',
+                name: ['timestamp'],
+                type: 'timeRange',
+                value: [1696636800000, 1728259200000],
+                plotType: {
+                  interval: '1-month',
+                  defaultTimeFormat: 'YYYY-MM-DD',
+                  type: 'histogram',
+                  aggregation: 'sum'
+                },
+                animationWindow: 'free',
+                yAxis: null,
+                view: 'enlarged',
+                speed: 1,
+                enabled: true
+              }
+            ],
             layers: [
               {
                 id: 'victims-layer',
