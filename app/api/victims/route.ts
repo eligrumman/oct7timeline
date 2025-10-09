@@ -14,10 +14,9 @@ import {
 } from '@/lib/dataProcessing';
 import {
   calculateVictimStatistics,
-  groupByLocation,
-  type VictimStatistics
+  groupByLocation
 } from '@/lib/statistics';
-import type { VictimData, ProcessedVictimData, VictimLocation } from '@/types/victim';
+import type { VictimData, ProcessedVictimData, VictimLocation, VictimStatistics } from '@/types/victim';
 
 /**
  * API Response structure
