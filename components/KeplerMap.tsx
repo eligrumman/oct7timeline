@@ -172,12 +172,12 @@ function KeplerMapInner({ mapboxToken }: KeplerMapInnerProps) {
                   },
                   isVisible: true,
                   visConfig: {
-                    radius: 20,
+                    radius: 22,
                     fixedRadius: false,
                     opacity: 0.8,
-                    outline: false,
+                    outline: true,
                     thickness: 2,
-                    strokeColor: null,
+                    strokeColor: [255, 255, 255],
                     colorRange: {
                       name: 'Red Memorial Scale',
                       type: 'sequential',
