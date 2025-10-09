@@ -73,8 +73,16 @@ const ErrorBanner = styled.div`
 
 // Create Redux store factory (per-component instance)
 const createKeplerStore = () => {
+  // Initialize Kepler reducer with side panel hidden for full screen map
+  const customKeplerReducer = keplerGlReducer.initialState({
+    uiState: {
+      activeSidePanel: null, // Hide side panel for full screen view
+      currentModal: null,    // Hide any modals
+    }
+  });
+
   const reducers = combineReducers({
-    keplerGl: keplerGlReducer,
+    keplerGl: customKeplerReducer,
   });
   return createStore(reducers, {}, applyMiddleware(taskMiddleware));
 };
