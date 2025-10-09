@@ -10,6 +10,7 @@ import { taskMiddleware } from "react-palm/tasks";
 import { Provider, useDispatch } from "react-redux";
 import styled from "styled-components";
 import keplerConfig from "@/data/kepler-config.json";
+import { useVictimData } from "@/hooks/useVictimData";
 
 // Styled container for the map
 const MapContainer = styled.div`
@@ -40,6 +41,36 @@ const WarningBanner = styled.div`
   font-weight: 500;
 `;
 
+// Loading overlay
+const LoadingOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  color: white;
+  font-size: 1.25rem;
+`;
+
+// Error banner
+const ErrorBanner = styled.div`
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background-color: #dc3545;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  z-index: 9999;
+  font-weight: 500;
+`;
+
 // Create Redux store factory (per-component instance)
 const createKeplerStore = () => {
   const reducers = combineReducers({
@@ -54,37 +85,178 @@ interface KeplerMapInnerProps {
 
 /**
  * Inner component that uses the Redux store
- * Loads the Kepler.gl configuration and initializes the map
+ * Loads the Kepler.gl configuration and initializes the map with victim data
  */
 function KeplerMapInner({ mapboxToken }: KeplerMapInnerProps) {
   const dispatch = useDispatch();
+  const { data, loading, error } = useVictimData({
+    includeStats: false,
+    autoFetch: true
+  });
 
   useEffect(() => {
-    // Load the configuration when component mounts
+    // Load the configuration and data when component mounts
     // This applies the pre-configured settings from kepler-config.json
     // including map state (Israel coordinates), theme, layers, and filters
+    // and adds the victim data to the map
     try {
       if (!keplerConfig?.config) {
         console.error('Invalid Kepler.gl configuration');
         return;
       }
 
-      dispatch(
-        addDataToMap({
-          datasets: [],
-          config: keplerConfig.config as unknown as ParsedConfig,
-          options: {
-            centerMap: true,
+      // If we have data, add it to the map
+      if (data && data.length > 0) {
+        // Transform victim data to Kepler.gl dataset format
+        const dataset = {
+          info: {
+            id: 'victims',
+            label: 'October 7th Victims',
           },
-        })
-      );
+          data: {
+            fields: [
+              { name: 'id', type: 'string' },
+              { name: 'fullName', type: 'string' },
+              { name: 'firstName', type: 'string' },
+              { name: 'lastName', type: 'string' },
+              { name: 'age', type: 'integer' },
+              { name: 'gender', type: 'string' },
+              { name: 'location', type: 'string' },
+              { name: 'latitude', type: 'real' },
+              { name: 'longitude', type: 'real' },
+              { name: 'date', type: 'date' },
+              { name: 'timestamp', type: 'timestamp' },
+              { name: 'source', type: 'string' },
+              { name: 'type', type: 'string' },
+              { name: 'rank', type: 'string' },
+              { name: 'isCivilian', type: 'boolean' },
+              { name: 'url', type: 'string' },
+            ],
+            rows: data.map(victim => [
+              victim.id,
+              victim.fullName,
+              victim.firstName,
+              victim.lastName,
+              victim.age,
+              victim.gender,
+              victim.location,
+              victim.latitude,
+              victim.longitude,
+              victim.date,
+              victim.timestamp,
+              victim.source,
+              victim.type,
+              victim.rank,
+              victim.isCivilian,
+              victim.url,
+            ]),
+          },
+        };
+
+        // Configure the point layer
+        const config = {
+          ...(keplerConfig.config as unknown as ParsedConfig),
+          visState: {
+            ...(keplerConfig.config as any).visState,
+            layers: [
+              {
+                id: 'victims-layer',
+                type: 'point',
+                config: {
+                  dataId: 'victims',
+                  label: 'Victims',
+                  color: [230, 0, 0], // Red color #E60000
+                  columns: {
+                    lat: 'latitude',
+                    lng: 'longitude',
+                  },
+                  isVisible: true,
+                  visConfig: {
+                    radius: 20,
+                    fixedRadius: false,
+                    opacity: 0.8,
+                    outline: false,
+                    thickness: 2,
+                    strokeColor: null,
+                    colorRange: {
+                      name: 'Global Warming',
+                      type: 'sequential',
+                      category: 'Uber',
+                      colors: ['#E60000', '#FF0000', '#FF4444'],
+                    },
+                    strokeColorRange: {
+                      name: 'Global Warming',
+                      type: 'sequential',
+                      category: 'Uber',
+                      colors: ['#E60000', '#FF0000', '#FF4444'],
+                    },
+                    radiusRange: [10, 30],
+                    filled: true,
+                  },
+                  hidden: false,
+                  textLabel: [
+                    {
+                      field: null,
+                      color: [255, 255, 255],
+                      size: 18,
+                      offset: [0, 0],
+                      anchor: 'start',
+                      alignment: 'center',
+                    },
+                  ],
+                },
+                visualChannels: {
+                  colorField: null,
+                  colorScale: 'quantile',
+                  strokeColorField: null,
+                  strokeColorScale: 'quantile',
+                  sizeField: null,
+                  sizeScale: 'linear',
+                },
+              },
+            ],
+          },
+        };
+
+        dispatch(
+          addDataToMap({
+            datasets: [dataset],
+            config: config,
+            options: {
+              centerMap: true,
+              readOnly: false,
+            },
+          })
+        );
+      } else if (!loading && !error) {
+        // No data yet, just load the config
+        dispatch(
+          addDataToMap({
+            datasets: [],
+            config: keplerConfig.config as unknown as ParsedConfig,
+            options: {
+              centerMap: true,
+            },
+          })
+        );
+      }
     } catch (error) {
       console.error('Failed to initialize Kepler.gl:', error);
     }
-  }, [dispatch]);
+  }, [dispatch, data, loading, error]);
 
   return (
     <MapContainer>
+      {loading && (
+        <LoadingOverlay>
+          <div>Loading victim data...</div>
+        </LoadingOverlay>
+      )}
+      {error && (
+        <ErrorBanner>
+          Error loading victim data: {error.message}
+        </ErrorBanner>
+      )}
       <KeplerGl
         id="map"
         mapboxApiAccessToken={mapboxToken || ""}
