@@ -78,6 +78,14 @@ const createKeplerStore = () => {
     uiState: {
       activeSidePanel: null, // Hide side panel for full screen view
       currentModal: null,    // Hide any modals
+      mapControls: {
+        visibleLayers: { show: false },
+        mapLegend: { show: false, active: false },
+        toggle3d: { show: true },
+        splitMap: { show: false },
+        mapDraw: { show: false },
+        mapLocale: { show: false },
+      },
     }
   });
 
