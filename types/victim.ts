@@ -148,6 +148,12 @@ export interface VictimStatistics {
   /** Victims grouped by date */
   byDate: Record<string, number>;
 
+  /** Victims grouped by location */
+  byLocation: Record<string, number>;
+
+  /** Victims grouped by gender */
+  byGender: Record<Gender, number>;
+
   /** Age statistics */
   ageStats: {
     min: number;
