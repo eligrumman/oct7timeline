@@ -95,8 +95,9 @@ function transformCSVRowToVictimData(row: Record<string, string>): Partial<Victi
     age: parseAge(row['גיל']),
     location,
     date: parseDateToISO(row['תאריך נוסף']),
-    latitude: 0, // Will be enriched later with geocoding
-    longitude: 0, // Will be enriched later with geocoding
+    // Default to center of Israel until we have proper geocoding
+    latitude: 31.5, // Center of Israel
+    longitude: 34.8, // Center of Israel
     source: url || 'unknown',
     type: TYPE_MAP[category] || category || 'unknown',
     gender: GENDER_MAP[genderHebrew],
