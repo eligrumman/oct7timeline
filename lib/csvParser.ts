@@ -112,10 +112,9 @@ export function parseVictimCSV(csvContent: string): Array<Partial<VictimData>> {
   const parseResult = Papa.parse<Record<string, string>>(csvContent, {
     header: true,
     skipEmptyLines: true,
-    encoding: 'UTF-8',
   });
 
-  if (parseResult.errors.length > 0) {
+  if (parseResult.errors && parseResult.errors.length > 0) {
     console.warn('CSV parsing warnings:', parseResult.errors);
   }
 
