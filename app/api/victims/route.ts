@@ -16,6 +16,7 @@ import {
   calculateVictimStatistics,
   groupByLocation
 } from '@/lib/statistics';
+import { parseVictimCSV } from '@/lib/csvParser';
 import type { VictimData, ProcessedVictimData, VictimLocation, VictimStatistics } from '@/types/victim';
 
 /**
@@ -150,13 +151,14 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Construct path to data file
-    const dataFilePath = path.join(process.cwd(), 'data', 'sample-victims.json');
+    // Construct path to data file (CSV format)
+    const dataFilePath = path.join(process.cwd(), 'data', 'victims.csv');
 
-    // Read the JSON file
-    let fileContent: string;
+    // Read and parse the CSV file
+    let rawVictimData: Array<Partial<VictimData>>;
     try {
-      fileContent = await fs.readFile(dataFilePath, 'utf-8');
+      const csvContent = await fs.readFile(dataFilePath, 'utf-8');
+      rawVictimData = parseVictimCSV(csvContent);
     } catch (error) {
       // Check if file doesn't exist
       if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
@@ -168,42 +170,17 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      // Other file read errors
+      // Other file read errors or parsing errors
       return createErrorResponse(
-        'Failed to read victim data file',
+        'Failed to read or parse victim data file',
         'FILE_READ_ERROR',
         500,
         error instanceof Error ? error.message : 'Unknown error'
       );
     }
 
-    // Parse JSON data
-    let rawVictimData: unknown;
-    try {
-      rawVictimData = JSON.parse(fileContent);
-    } catch (error) {
-      return createErrorResponse(
-        'Invalid JSON in victim data file',
-        'INVALID_JSON',
-        500,
-        error instanceof Error ? error.message : 'Unknown error'
-      );
-    }
-
-    // Validate that parsed data is an array
-    if (!Array.isArray(rawVictimData)) {
-      return createErrorResponse(
-        'Victim data must be an array',
-        'VALIDATION_ERROR',
-        500,
-        { receivedType: typeof rawVictimData }
-      );
-    }
-
     // Process victim data with validation
-    const processingResult: BulkProcessingResult = processVictimDataArray(
-      rawVictimData as Array<Partial<VictimData>>
-    );
+    const processingResult: BulkProcessingResult = processVictimDataArray(rawVictimData);
 
     // Check if processing succeeded
     if (!processingResult.success && processingResult.failedRecords.length === rawVictimData.length) {
