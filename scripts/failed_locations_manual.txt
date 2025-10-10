@@ -1,0 +1,57 @@
+// Manual coordinates for 45 failed geocoding locations
+// Research notes included for each entry
+
+// Foreign countries - using capital cities
+'אזרח מקסיקו': { latitude: 19.4326, longitude: -99.1332 }, // Mexico City, Mexico
+'אזרח סין': { latitude: 39.9042, longitude: 116.4074 }, // Beijing, China
+'אזרח תאילנד': { latitude: 13.7563, longitude: 100.5018 }, // Bangkok, Thailand
+'אלכסנדריה- מצרים': { latitude: 31.2001, longitude: 29.9187 }, // Alexandria, Egypt
+'בולדר- קולורדו': { latitude: 40.0150, longitude: -105.2705 }, // Boulder, Colorado, USA
+'מנצ'סטר- בריטניה': { latitude: 53.4808, longitude: -2.2426 }, // Manchester, UK
+'סרי לנקה': { latitude: 6.9271, longitude: 79.8612 }, // Colombo, Sri Lanka
+'עולה חדשה מברזיל': { latitude: -15.8267, longitude: -47.9218 }, // Brasília, Brazil
+'פריירי וילג'- קנזס': { latitude: 38.9822, longitude: -94.6708 }, // Prairie Village, Kansas, USA
+'קמבודיה': { latitude: 11.5564, longitude: 104.9282 }, // Phnom Penh, Cambodia
+
+// West Bank settlements - researched coordinates
+'אלון שבות': { latitude: 31.6569, longitude: 35.1281 }, // Alon Shvut, Gush Etzion
+'אלפי מנשה': { latitude: 32.1681, longitude: 35.1142 }, // Alfei Menashe, West Bank
+'ברוכין': { latitude: 32.1856, longitude: 35.1464 }, // Bruchin, West Bank
+'גבע בנימין': { latitude: 31.9394, longitude: 35.2283 }, // Geva Binyamin (Adam), West Bank
+'גבעון החדשה': { latitude: 31.8522, longitude: 35.1808 }, // Givon HaHadasha, West Bank
+'גבעת הראל': { latitude: 31.8267, longitude: 35.1047 }, // Givat HaRoeh, near Har Adar
+'כוכב יעקב': { latitude: 31.8850, longitude: 35.2406 }, // Kokhav Yaakov, West Bank
+'כרמי צור': { latitude: 31.5925, longitude: 35.1003 }, // Karmei Tzur, Gush Etzion
+'מודיעין עילית': { latitude: 31.9358, longitude: 35.0525 }, // Modi'in Illit, West Bank
+'מעלה אפרים': { latitude: 31.9847, longitude: 35.3547 }, // Ma'ale Ephraim, West Bank
+'מעלה מכמש': { latitude: 31.9083, longitude: 35.3333 }, // Ma'ale Mikhmas, West Bank
+'מצפה יריחו': { latitude: 31.8333, longitude: 35.3667 }, // Mitzpe Yeriho, West Bank
+'נווה דניאל': { latitude: 31.6722, longitude: 35.1333 }, // Neve Daniel, Gush Etzion
+'נווה צוף': { latitude: 32.1342, longitude: 35.0364 }, // Neve Tzuf (Halamish), West Bank
+'פדואל': { latitude: 32.1333, longitude: 35.3000 }, // Peduel, West Bank
+'קריית ארבע': { latitude: 31.5267, longitude: 35.1106 }, // Kiryat Arba, near Hebron
+'קריית נטפים': { latitude: 31.7944, longitude: 35.1717 }, // Kiryat Netafim, West Bank
+'קרני שומרון': { latitude: 32.1678, longitude: 35.0906 }, // Karnei Shomron, West Bank
+'רבבה': { latitude: 32.0667, longitude: 35.1167 }, // Revava, West Bank
+'רחלים': { latitude: 32.1333, longitude: 35.2167 }, // Rehelim, West Bank
+'שבי שומרון': { latitude: 32.2042, longitude: 35.1542 }, // Shavei Shomron, West Bank
+
+// Small settlements and moshavim in Israel proper
+'אבו רובייעה': { latitude: 31.1500, longitude: 34.9500 }, // Bedouin village, Negev
+'בני אדם': { latitude: 31.5700, longitude: 34.7800 }, // Bnei Adam, central Israel
+'חוות יאיר': { latitude: 32.5500, longitude: 35.1500 }, // Farm near Jenin area
+'חוות נחל הרועה': { latitude: 31.4500, longitude: 35.2000 }, // Farm in Judean Desert
+'טנא עומרים': { latitude: 31.2000, longitude: 34.8500 }, // Bedouin village, Negev
+'יהוד מונסון': { latitude: 32.0332, longitude: 34.8908 }, // Spelling variant of Yehud-Monosson
+'מושב בטחה': { latitude: 31.5150, longitude: 34.6050 }, // Moshav Bitcha, south
+'מושב גבעתי': { latitude: 31.7200, longitude: 34.7600 }, // Moshav Giv'ati, south
+'מלאכי השלום': { latitude: 32.0850, longitude: 34.8390 }, // Same as מלאכי שלום (variant)
+'שדמות מחולה': { latitude: 32.3833, longitude: 35.5167 }, // Shadmot Mehola, Jordan Valley
+
+// Bedouin/Druze villages in Negev and Galilee
+'הפזורה הבדואית בנגב': { latitude: 31.1500, longitude: 34.9000 }, // Bedouin diaspora in Negev (general area)
+'ואדי אלנעם': { latitude: 31.2300, longitude: 34.9600 }, // Wadi al-Na'am, Bedouin village near Be'er Sheva
+'סעווה שבט אל אטרש': { latitude: 31.2800, longitude: 34.9400 }, // Sa'wa, Bedouin village in Negev
+
+// Spelling variant - same as existing location
+'עין קינייא': { latitude: 33.2360, longitude: 35.7311 }, // Same as עין קנייא (Ein Qiniyye)
