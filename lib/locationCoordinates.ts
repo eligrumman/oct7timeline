@@ -480,7 +480,6 @@ export const ISRAEL_LOCATION_COORDINATES: Record<string, { latitude: number; lon
   'אזרח תאילנד': { latitude: 13.7563, longitude: 100.5018 }, // Bangkok, Thailand
   'אלכסנדריה- מצרים': { latitude: 31.2001, longitude: 29.9187 }, // Alexandria, Egypt
   'בולדר- קולורדו': { latitude: 40.0150, longitude: -105.2705 }, // Boulder, Colorado, USA
-  'מנצ\'סטר- בריטניה': { latitude: 53.4808, longitude: -2.2426 }, // Manchester, UK
   'סרי לנקה': { latitude: 6.9271, longitude: 79.8612 }, // Colombo, Sri Lanka
   'עולה חדשה מברזיל': { latitude: -15.8267, longitude: -47.9218 }, // Brasília, Brazil
   'פריירי וילג\'- קנזס': { latitude: 38.9822, longitude: -94.6708 }, // Prairie Village, Kansas, USA
