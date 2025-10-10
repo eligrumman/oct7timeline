@@ -5,6 +5,7 @@
 
 import Papa from 'papaparse';
 import type { VictimData } from '@/types/victim';
+import { getLocationCoordinates } from './locationCoordinates';
 
 /**
  * Hebrew CSV column mapping to VictimData fields
@@ -89,15 +90,17 @@ function transformCSVRowToVictimData(row: Record<string, string>): Partial<Victi
   const genderHebrew = row['מִין']?.trim() || '';
   const url = row['קישור למאמר']?.trim() || '';
 
+  // Get coordinates for the location
+  const coordinates = getLocationCoordinates(location);
+
   return {
     firstName,
     lastName,
     age: parseAge(row['גיל']),
     location,
     date: parseDateToISO(row['תאריך נוסף']),
-    // Default to center of Israel until we have proper geocoding
-    latitude: 31.5, // Center of Israel
-    longitude: 34.8, // Center of Israel
+    latitude: coordinates.latitude,
+    longitude: coordinates.longitude,
     source: url || 'unknown',
     type: TYPE_MAP[category] || category || 'unknown',
     gender: GENDER_MAP[genderHebrew],
